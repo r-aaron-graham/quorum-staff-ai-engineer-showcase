@@ -50,12 +50,16 @@ def chunk_text(text: str, max_chars: int = 10000, overlap: int = 200) -> List[st
     """
     Splits text into chunks of max_chars with overlap for context.
     """
+    if max_chars <= 0 or overlap < 0 or overlap >= max_chars:
+        raise ValueError("Require max_chars > 0 and 0 <= overlap < max_chars")
     chunks = []
     start = 0
     length = len(text)
     while start < length:
         end = min(start + max_chars, length)
         chunks.append(text[start:end])
+        if end == length:
+            break
         start = end - overlap
     return chunks
 
